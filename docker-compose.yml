@@ -1,0 +1,75 @@
+version: "3.9"
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - kafka
+    environment:
+      - MONGO_URI=mongodb://root:example@mongodb:27017/mydatabase?authSource=admin
+      - KAFKA_HOST=kafka:9092
+  alert-server:
+    build: ./alert-server
+    container_name: alert-server
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://root:example@mongodb:27017/mydatabase?authSource=admin
+  collect-server:
+    container_name: collect-server
+    build: ./collect-server
+    depends_on:
+      - mongodb
+      - kafka
+      - alert-server
+      - analysis-servers
+  analysis-servers:
+    container_name: analysis-servers
+    build: ./analysis-servers
+    ports:
+      - "8000:8000"
+  mongodb:
+    image: mongo:latest
+    command: mongod --bind_ip_all
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: "bitnami/kafka:latest"
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
