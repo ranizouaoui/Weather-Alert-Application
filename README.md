@@ -26,7 +26,7 @@ Perform the following steps:
 3- Download and install <a href="https://nodejs.org/en/">Kafka</a>.<br/>
 4- Download and install <a href="https://www.mongodb.com/">Mongodb (6.0)</a>.<br/>
 5- Download and install <a href="https://kafka.apache.org/">Visual Studio Code(VS Code)</a>.<br/>
-6- Install vetur, Better Comments, Docker, python, GitHub Theme extensions for VS Code To enjoy the code.<br/>
+6- Install <strong>Vetur, Better Comments, Docker, Python, GitHub Theme </strong> extensions for VS Code To enjoy the code.<br/>
 7- Clone this repository.<br/>
 8- Connect to the MongoDB 6.0 server by running the following command:
 
