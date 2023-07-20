@@ -98,7 +98,7 @@ Running the command will expose 7 services with the following ports:
 <li><strong>Analysis-server</strong> - <code>:8000</code></li>
 <li><strong>Backend</strong> - <code>:3000</code></li>
 <li><strong>Frontend</strong> - <code>:8080</code></li>
-<li><strong>Kafka</strong> - <code>:9092|9093</code></li>
+<li><strong>Kafka</strong> - <code>:9092|9094</code></li>
 <li><strong>Zookeeper</strong> - <code>:2181</code></li>
 <li><strong>Mongodb</strong> - <code>:27017</code></li>
 </ul>
